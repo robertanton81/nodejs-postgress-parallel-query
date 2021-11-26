@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  node_be:
+    container_name: node_be
+    image: node-playground:1.0.0
+    build:
+      context: .
+    ports:
+      - 8080:80
+    environment:
+      - EXTERNAL_PORT=8080
+      - PGUSER=user
+      - PGPASSWORD=123456
+      - PGDATABASE=testdb
+      - PGHOST=db
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: 'postgres:12'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=testdb
+    volumes:
+      - pgdata1:/var/lib/postgresql/data
+
+volumes:
+  pgdata1: {}
